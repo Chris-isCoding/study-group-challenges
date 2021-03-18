@@ -104,6 +104,8 @@ Write a function that returns true if the argument is an Array, and false if it 
 
 const isItAnArray = (arr) => Array.isArray(arr);
 
+const isItAnArray = (arr) => (arr.length ? typeof arr !== 'string' : false); //add alternative solution
+
 console.log(isItAnArray([1, 2, 3])); //true
 console.log(isItAnArray('hello')); //false
 
@@ -127,7 +129,8 @@ Create a function that takes two strings as arguments and returns the number of 
 
 const matchStr = (str1, str2) => {
 	let count = 0;
-	for (let letter of str2) {
+	for (const letter of str2) {
+		//best practice
 		if (letter === str1) {
 			count++;
 		}
@@ -383,6 +386,7 @@ const specialReverse = (str, letter) => {
 	const strToArr = str.split(' ');
 	//use map method to iterate over array
 	const searchArr = strToArr.map((word) => {
+		// not sure if using map is good practice in this case - Chris K.
 		//check if current word starts with letter
 		if (word.startsWith(letter)) {
 			//split word into array of individual letter and reverse the order, join together
@@ -395,6 +399,28 @@ const specialReverse = (str, letter) => {
 	//return arr thats converted back to a string
 	return searchArr.join(' ');
 };
+
+// same as above using forEach
+const specialReverse = (str, letter) => {
+	const strToArr = str.split(' ');
+	strToArr.forEach((word, i) => {
+		if (word[0] === letter) {
+			strToArr[i] = strToArr[i].split('').reverse().join('');
+		}
+	});
+	return strToArr.join(' ');
+};
+
+//simple for loop solution
+const specialReverse = (str, letter) => {
+	for (const word of str.split(' ')) {
+		if (word[0] === letter) {
+			str = str.replace(word, word.split('').reverse().join(''));
+		}
+	}
+	return str;
+};
+
 console.log(specialReverse('word searches are super fun', 's')); //➞ "word sehcraes are repus fun"
 console.log(specialReverse('first man to walk on the moon', 'm')); //➞ "first nam to walk on the noom"
 console.log(specialReverse('peter piper picked pickled peppers', 'p')); //➞ "retep repip dekcip delkcip sreppep"
